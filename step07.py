@@ -56,9 +56,18 @@ if __name__ == "__main__":
     b = B(a)
     y = C(b)
 
-    assert y.creator == C
-    assert y.creator.input == b
-    assert y.creator.input.creator == B
-    assert y.creator.input.creator.input == a
-    assert y.creator.input.creator.input.creator == A
-    assert y.creator.input.creator.input.creator.input == x
+    # backward
+    y.grad = np.array(1.0)
+
+    _C = y.creator
+    _b = _C.input
+    _b.grad = _C.backward(y.grad)
+
+    _B = _b.creator
+    _a = _B.input
+    _a.grad = _B.backward(_b.grad)
+
+    _A = _a.creator
+    _x = _A.input
+    _x.grad = _A.backward(_a.grad)
+    print(_x.grad)
