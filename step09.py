@@ -11,10 +11,11 @@ def exp(x):
     return f(x)
 
 if __name__ == "__main__":
-    x = Variable(np.array(0.5))
-    y = square(exp(square(x)))
-    
-    # backward
-    y.grad = np.array(1.0)
-    y.backward()
-    print(x.grad)
+    # x = Variable(np.array(0.5))
+    # y = square(exp(square(x)))
+    # y.backward()
+    # print(x.grad)
+
+    x = Variable(np.array(1.0))
+    x = Variable(None)
+    x = Variable(1.0)
