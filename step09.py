@@ -16,6 +16,16 @@ if __name__ == "__main__":
     # y.backward()
     # print(x.grad)
 
-    x = Variable(np.array(1.0))
-    x = Variable(None)
-    x = Variable(1.0)
+    # x = Variable(np.array(1.0))
+    # x = Variable(None)
+    # x = Variable(1.0)
+
+    x = np.array([1.0])
+    y = x ** 2
+    print(type(x), x.ndim)
+    print(type(y))
+
+    x = np.array(1.0)
+    y = x ** 2
+    print(type(x), x.ndim)
+    print(type(y))
