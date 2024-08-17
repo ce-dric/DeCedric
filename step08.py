@@ -26,12 +26,17 @@ class Variable:
 
             if x.creator is not None:
                 funcs.append(x.creator)
+
+def as_array(x):
+    if np.isscalar(x):
+        return np.array(x)
+    return x
         
 class Function:
     def __call__(self, input):
         x = input.data
         y = self.forward(x)
-        output = Variable(y)
+        output = Variable(as_array(y))
         output.set_creator(self)
         self.input = input
         self.output = output
