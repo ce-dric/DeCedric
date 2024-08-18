@@ -38,6 +38,9 @@ class Variable:
         p = str(self.data).replace('\n', '\n' + ' ' * 9)
         return 'variable(' + p + ')'
     
+    def __mul__(self, other):
+        return mul(self, other)
+    
     @property
     def shape(self):
         return self.data.shape
@@ -149,17 +152,28 @@ class Square(Function):
 def square(x):
     return Square()(x)
 
+class Mul(Function):
+    def forward(self, x0, x1):
+        y = x0 * x1
+        return y
+    
+    def backward(self, gy):
+        x0, x1 = self.inputs[0].data, self.inputs[1].data
+        return gy * x1, gy * x0
+
+def mul(x0, x1):
+    return Mul()(x0, x1)
+
+Variable.__add__ = add
 
 if __name__ == "__main__":
-    x0 = Variable(np.array(1.0))
-    x1 = Variable(np.array(1.0))
+    a = Variable(np.array(3.0))
+    b = Variable(np.array(2.0))
+    c = Variable(np.array(1.0))
 
-    t = add(x0, x1)
-    y = add(x0, t)
+    y = a * b + c
     y.backward()
 
-    print(y.grad, t.grad)
-    print(x0.grad, x1.grad)
-
-    x2 = Variable(np.array([[1, 2, 3], [4, 5, 6]]))
-    print(x2)
+    print(y)
+    print(a.grad)
+    print(b.grad)
