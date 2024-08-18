@@ -18,6 +18,8 @@ class Config:
     enable_backprop = True
 
 class Variable:
+    __array_priority__ = 200
+
     def __init__(self, data, name=None):
         if data is not None:
             if not isinstance(data, np.ndarray):
@@ -107,6 +109,7 @@ def as_array(x):
 
 class Function:
     def __call__(self, *inputs):
+        inputs = [as_variable(x) for x in inputs]
         xs = [x.data for x in inputs]
         ys = self.forward(*xs)
         if not isinstance(ys, tuple):
@@ -137,6 +140,7 @@ class Add(Function):
         return gy, gy
     
 def add(x0, x1):
+    x1 = as_array(x1)
     return Add()(x0, x1)
 
 class Square(Function):
@@ -162,18 +166,19 @@ class Mul(Function):
         return gy * x1, gy * x0
 
 def mul(x0, x1):
+    x1 = as_array(x1)
     return Mul()(x0, x1)
 
 Variable.__add__ = add
+Variable.__radd__ = add
+Variable.__rmul__ = mul
+
+def as_variable(obj):
+    if isinstance(obj, Variable):
+        return obj
+    return Variable(obj)
 
 if __name__ == "__main__":
-    a = Variable(np.array(3.0))
-    b = Variable(np.array(2.0))
-    c = Variable(np.array(1.0))
-
-    y = a * b + c
-    y.backward()
-
+    x = Variable(np.array(1.0))
+    y = np.array([2.0]) + x
     print(y)
-    print(a.grad)
-    print(b.grad)
