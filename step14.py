@@ -93,6 +93,9 @@ if __name__ == "__main__":
     y.backward()
     print(x.grad)
 
+
+    x.cleargrad()
+
     y = add(add(x, x),x)
     y.backward()
     print(x.grad)
