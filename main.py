@@ -102,13 +102,12 @@ def square(x):
 
 
 if __name__ == "__main__":
-    x = Variable(np.array(2.0))
+    x0 = Variable(np.array(1.0))
+    x1 = Variable(np.array(1.0))
 
-    a = square(x)
-    b = square(a)
-    c = square(a)
-    y = add(b,c)
-
+    t = add(x0, x1)
+    y = add(x0, t)
     y.backward()
-    print(y.data)
-    print(x.grad)
+
+    print(y.grad, t.grad)
+    print(x0.grad, x1.grad)
