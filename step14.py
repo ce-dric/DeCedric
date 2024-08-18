@@ -33,6 +33,9 @@ class Variable:
                 if x.creator is not None:
                     funcs.append(x.creator)
 
+    def cleargrad(self):
+        self.grad = None
+
 def as_array(x):
     if np.isscalar(x):
         return np.array(x)
@@ -87,7 +90,9 @@ def square(x):
 if __name__ == "__main__":
     x = Variable(np.array(3.0))
     y = add(x, x)
-    print('y', y.data)
-
     y.backward()
-    print('x.grad : ', x.grad)
+    print(x.grad)
+
+    y = add(add(x, x),x)
+    y.backward()
+    print(x.grad)
