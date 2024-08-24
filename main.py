@@ -10,7 +10,6 @@ def f(x):
     return y
 
 x = Variable(np.array(2.0))
-x.cleargrad()
 y = f(x)
 y.backward(create_graph=True)
 print(x.grad)

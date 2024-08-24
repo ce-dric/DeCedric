@@ -9,3 +9,7 @@ source de_cedric/bin/activate
 ```
 brew install graphviz
 ```
+
+```
+docker run -it --rm -v %CD%:/workspace python /bin/bash
+```
