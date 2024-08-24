@@ -5,5 +5,6 @@ from decedric.core_simple import no_grad
 from decedric.core_simple import as_array
 from decedric.core_simple import as_variable
 from decedric.core_simple import setup_variable
+from decedric.core_simple import sin
 
 setup_variable()
