@@ -1,6 +1,8 @@
 import numpy as np
 import weakref
 import contextlib
+import decedric
+import decedric.functions
 
 
 class Config:
@@ -87,6 +89,11 @@ class Variable:
 
     def cleargrad(self):
         self.grad = None
+    
+    def reshape(self, *shape):
+        if len(shape) == 1 and isinstance(shape[0], (tuple, list)):
+            shape = shape[0]
+        return decedric.functions.reshape(self, shape)
 
 def as_array(x):
     if np.isscalar(x):
