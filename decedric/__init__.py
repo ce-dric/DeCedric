@@ -17,5 +17,7 @@ else:
     from decedric.core import as_array
     from decedric.core import as_variable
     from decedric.core import setup_variable
+
+    import decedric.functions
     
 setup_variable()

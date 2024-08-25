@@ -1,5 +1,6 @@
 import numpy as np
 import decedric
+from decedric import utils
 from decedric.core import Function, as_variable
 
 
