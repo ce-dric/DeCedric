@@ -100,6 +100,9 @@ class Variable:
     @property
     def T(self):
         return decedric.functions.transpose(self)
+    
+    def sum(self, axis=None, keepdims=False):
+        return decedric.functions.sum(self, axis, keepdims)
 
 def as_array(x):
     if np.isscalar(x):
