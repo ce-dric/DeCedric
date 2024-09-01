@@ -6,47 +6,51 @@ import matplotlib.pyplot as plt
 from decedric import Variable
 import decedric.functions as F
 
-# Generate toy dataset
+
 np.random.seed(0)
 x = np.random.rand(100, 1)
-y = 5 + 2 * x + np.random.rand(100, 1)
-x, y = Variable(x), Variable(y)
+y = np.sin(2 * np.pi * x) + np.random.rand(100, 1)
 
-W = Variable(np.zeros((1, 1)))
-b = Variable(np.zeros(1))
+I, H, O = 1, 10, 1
+W1 = Variable(0.01 * np.random.randn(I, H))
+b1 = Variable(np.zeros(H))
+W2 = Variable(0.01 * np.random.randn(H, O))
+b2 = Variable(np.zeros(O))
 
 
 def predict(x):
-    y = F.matmul(x, W) + b
+    y = F.linear(x, W1, b1)
+    y = F.sigmoid(y)
+    y = F.linear(y, W2, b2)
     return y
 
 
-def mean_squared_error(x0, x1):
-    diff = x0 - x1
-    return F.sum(diff ** 2) / len(diff)
-
-
-lr = 0.1
-iters = 100
+lr = 0.2
+iters = 10000
 
 for i in range(iters):
     y_pred = predict(x)
-    loss = mean_squared_error(y, y_pred)
+    loss = F.mean_squared_error(y, y_pred)
 
-    W.cleargrad()
-    b.cleargrad()
+    W1.cleargrad()
+    b1.cleargrad()
+    W2.cleargrad()
+    b2.cleargrad()
     loss.backward()
 
-    # Update .data attribute (No need grads when updating params)
-    W.data -= lr * W.grad.data
-    b.data -= lr * b.grad.data
-    print(W, b, loss)
+    W1.data -= lr * W1.grad.data
+    b1.data -= lr * b1.grad.data
+    W2.data -= lr * W2.grad.data
+    b2.data -= lr * b2.grad.data
+    if i % 1000 == 0:
+        print(loss)
 
 
 # Plot
-plt.scatter(x.data, y.data, s=10)
+plt.scatter(x, y, s=10)
 plt.xlabel('x')
 plt.ylabel('y')
-y_pred = predict(x)
-plt.plot(x.data, y_pred.data, color='r')
+t = np.arange(0, 1, .01)[:, np.newaxis]
+y_pred = predict(t)
+plt.plot(t, y_pred.data, color='r')
 plt.show()
