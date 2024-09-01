@@ -3,11 +3,12 @@ if '__file__' in globals():
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import numpy as np
 from decedric import Variable
+from decedric import functions as F
 
-x0 = Variable(np.array([1, 2, 3]))
-x1 = Variable(np.array([10]))
-y = x0 + x1
-print(y)
-
+x = Variable(np.random.randn(2, 3))
+W = Variable(np.random.randn(3, 4))
+y = F.matmul(x, W)
 y.backward()
-print(x1.grad)
+
+print(x.grad.shape)
+print(W.grad.shape)
